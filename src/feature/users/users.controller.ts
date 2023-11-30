@@ -9,6 +9,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 import { Public } from '../../services/auth/public.constants'
+import { ADMIN_ROLE } from '../../services/auth/roles.constants'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 
@@ -24,6 +25,7 @@ export class UsersController {
     return this.usersService.create(createUserDto)
   }
 
+  @ADMIN_ROLE()
   @Get('/by-email/:email')
   async findByEmail(@Param('email') email: string) {
     const user = await this.usersService.findByEmail(email)
@@ -35,6 +37,7 @@ export class UsersController {
     return user
   }
 
+  @ADMIN_ROLE()
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id)

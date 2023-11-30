@@ -44,8 +44,8 @@ export class UsersService {
   }
 
   private mapUserToDto(user: User): UserResponseDto {
-    const { _id, email, createdAt } = user
+    const { _id, email, createdAt, roles } = user
 
-    return { id: _id, email, createdAt }
+    return { id: _id, email, createdAt, roles }
   }
 }

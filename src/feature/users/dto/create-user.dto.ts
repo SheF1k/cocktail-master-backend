@@ -1,5 +1,7 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator'
 
+import { UserRoles } from '../../../constants/roles'
+
 export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
@@ -9,4 +11,6 @@ export class CreateUserDto {
   @MinLength(6)
   @MaxLength(20)
   password: string
+
+  role: UserRoles[]
 }

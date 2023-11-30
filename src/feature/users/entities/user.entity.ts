@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { hash } from 'bcrypt'
 import { Document } from 'mongoose'
 
+import { UserRoles } from '../../../constants/roles'
+
 @Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ required: true, unique: true, index: true })
@@ -12,6 +14,9 @@ export class User extends Document {
 
   @Prop({ default: Date.now })
   createdAt: Date
+
+  @Prop({ type: [String], enum: UserRoles, default: [UserRoles.USER] })
+  roles: UserRoles[]
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
