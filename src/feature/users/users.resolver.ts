@@ -11,7 +11,7 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @ADMIN_ROLE()
-  @Mutation(() => UserResponseDto)
+  @Mutation(() => UserResponseDto, { name: 'createUser' })
   async create(
     @Args('createUserDto') createUserDto: CreateUserDto,
   ): Promise<UserResponseDto> {
@@ -19,7 +19,7 @@ export class UsersResolver {
   }
 
   @ADMIN_ROLE()
-  @Query(() => UserResponseDto)
+  @Query(() => UserResponseDto, { name: 'findUserByEmail' })
   async findByEmail(@Args('email') email: string): Promise<UserResponseDto> {
     const user = await this.usersService.findByEmail(email)
 
@@ -31,7 +31,7 @@ export class UsersResolver {
   }
 
   @ADMIN_ROLE()
-  @Query(() => UserResponseDto)
+  @Query(() => UserResponseDto, { name: 'findUserById' })
   async findOne(@Args('id') id: string): Promise<UserResponseDto> {
     const user = await this.usersService.findOne(id)
 

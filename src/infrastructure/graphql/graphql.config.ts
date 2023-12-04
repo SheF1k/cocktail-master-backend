@@ -1,3 +1,5 @@
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
+import { contextBuilder } from '@infrastructure/graphql/graphql.context'
 import { ApolloDriverConfig } from '@nestjs/apollo'
 import { Injectable } from '@nestjs/common'
 import { GqlOptionsFactory } from '@nestjs/graphql'
@@ -9,7 +11,9 @@ export class GqlConfigService implements GqlOptionsFactory {
     return {
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      context: ({ req }) => ({ req }),
+      context: contextBuilder,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }
   }
 }
