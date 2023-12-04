@@ -1,10 +1,9 @@
+import { User } from '@feature/users/entities/user.entity'
+import { UsersService } from '@feature/users/users.service'
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { omit } from 'lodash'
-
-import { User } from '../users/entities/user.entity'
-import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class AuthService {

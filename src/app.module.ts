@@ -1,17 +1,17 @@
+import { UsersModule } from '@feature/users/users.module'
+import { AuthModule } from '@infrastructure/auth/auth.module'
+import { JwtAuthGuard } from '@infrastructure/auth/jwt/jwt-auth.guard'
+import { GraphqlModule } from '@infrastructure/graphql/graphql.module'
+import { RbacGuard } from '@infrastructure/rbac/rbac.guard'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { MongooseModule } from '@nestjs/mongoose'
+import { MongooseConfigService } from '@services/database/mongoose-config.service'
 
 import { AppController } from './app.controller'
 import authConfig from './config/auth.config'
 import databaseConfig from './config/database.config'
-import { AuthModule } from './feature/auth/auth.module'
-import { JwtAuthGuard } from './feature/auth/jwt/jwt-auth.guard'
-import { GraphqlModule } from './feature/graphql/graphql.module'
-import { RbacGuard } from './feature/rbac/rbac.guard'
-import { UsersModule } from './feature/users/users.module'
-import { MongooseConfigService } from './services/database/mongoose-config.service'
 
 @Module({
   imports: [

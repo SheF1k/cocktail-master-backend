@@ -1,9 +1,9 @@
+import { UsersModule } from '@feature/users/users.module'
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
+import { JwtConfigService } from '@services/auth/jwt-config.service'
 
-import { JwtConfigService } from '../../services/auth/jwt-config.service'
-import { UsersModule } from '../users/users.module'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt/jwt.strategy'
 import { LocalStrategy } from './local/local.strategy'

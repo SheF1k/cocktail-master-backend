@@ -1,11 +1,11 @@
+import { UserRoles } from '@constants/roles'
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { GqlExecutionContext } from '@nestjs/graphql'
+import { ROLES_METADATA_KEY } from '@services/auth/roles.constants'
 import { isEmpty } from 'lodash'
 import { Observable } from 'rxjs'
 
-import { UserRoles } from '../../constants/roles'
-import { ROLES_METADATA_KEY } from '../../services/auth/roles.constants'
 import { RbacService } from './rbac.service'
 
 @Injectable()
