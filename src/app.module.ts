@@ -1,10 +1,12 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
+import { GraphQLModule } from '@nestjs/graphql'
 import { MongooseModule } from '@nestjs/mongoose'
+import * as process from 'process'
 
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import authConfig from './config/auth.config'
 import databaseConfig from './config/database.config'
 import { AuthModule } from './feature/auth/auth.module'
@@ -21,11 +23,16 @@ import { MongooseConfigService } from './services/database/mongoose-config.servi
     }),
     MongooseModule.forRootAsync({ useClass: MongooseConfigService }),
     UsersModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: `${process.cwd()}/src/schema.gql`,
+      sortSchema: true,
+      context: ({ req }) => ({ req }),
+    }),
     AuthModule,
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RbacGuard },
   ],

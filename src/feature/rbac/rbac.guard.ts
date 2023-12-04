@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { GqlExecutionContext } from '@nestjs/graphql'
 import { isEmpty } from 'lodash'
 import { Observable } from 'rxjs'
 
@@ -39,7 +40,8 @@ export class RbacGuard implements CanActivate {
   }
 
   private getUserRoles(context: ExecutionContext): UserRoles[] {
-    const userRoles = context.switchToHttp().getRequest().user?.roles
+    const userRoles =
+      GqlExecutionContext.create(context).getContext().req.user?.roles
 
     return userRoles || []
   }

@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { isValidObjectId, Model } from 'mongoose'
 
 import { ERROR_CODES } from '../../constants/database'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -28,9 +28,17 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<UserResponseDto | null> {
-    const user = await this.userModel.findById(id).exec()
+    if (!isValidObjectId(id)) {
+      return null
+    }
 
-    return user ? this.mapUserToDto(user) : null
+    try {
+      const user = await this.userModel.findById(id).exec()
+
+      return user ? this.mapUserToDto(user) : null
+    } catch (e) {
+      return null
+    }
   }
 
   async findByEmail(email: string): Promise<UserResponseDto | null> {

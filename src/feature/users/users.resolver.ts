@@ -1,33 +1,26 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { NotFoundException } from '@nestjs/common'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
-import { Public } from '../../services/auth/public.constants'
 import { ADMIN_ROLE } from '../../services/auth/roles.constants'
 import { CreateUserDto } from './dto/create-user.dto'
+import { UserResponseDto } from './dto/user-response.dto'
 import { UsersService } from './users.service'
 
-@ApiTags('Users')
-@ApiBearerAuth()
-@Controller('users')
-export class UsersController {
+@Resolver('User')
+export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @ADMIN_ROLE()
+  @Mutation(() => UserResponseDto)
+  async create(
+    @Args('createUserDto') createUserDto: CreateUserDto,
+  ): Promise<UserResponseDto> {
     return this.usersService.create(createUserDto)
   }
 
   @ADMIN_ROLE()
-  @Get('/by-email/:email')
-  async findByEmail(@Param('email') email: string) {
+  @Query(() => UserResponseDto)
+  async findByEmail(@Args('email') email: string): Promise<UserResponseDto> {
     const user = await this.usersService.findByEmail(email)
 
     if (!user) {
@@ -38,8 +31,8 @@ export class UsersController {
   }
 
   @ADMIN_ROLE()
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Query(() => UserResponseDto)
+  async findOne(@Args('id') id: string): Promise<UserResponseDto> {
     const user = await this.usersService.findOne(id)
 
     if (!user) {
