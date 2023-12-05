@@ -1,6 +1,6 @@
+import { UserRoles } from '@constants/roles'
+import { TagResponseDto } from '@feature/tags/dto/response.dto'
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-
-import { UserRoles } from '../../../constants/roles'
 
 @ObjectType('User')
 export class UserResponseDto {
@@ -15,4 +15,7 @@ export class UserResponseDto {
 
   @Field(() => [String])
   roles: UserRoles[]
+
+  @Field(() => [TagResponseDto], { nullable: true, defaultValue: [] })
+  tags?: TagResponseDto[]
 }

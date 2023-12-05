@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { PaginationInput } from '@services/pagination/dto/pagination.dto'
 import { PaginationService } from '@services/pagination/pagination.service'
 import { bind } from 'lodash'
-import { isValidObjectId, Model } from 'mongoose'
+import { FilterQuery, isValidObjectId, Model } from 'mongoose'
 
 @Injectable()
 export class TagsService {
@@ -52,7 +52,7 @@ export class TagsService {
     }
   }
 
-  async findAll({
+  async findAllPaginated({
     pagination,
   }: {
     pagination: PaginationInput
@@ -65,5 +65,11 @@ export class TagsService {
       ),
       pagination: pagination,
     })
+  }
+
+  async findAll(filter: FilterQuery<Tag>): Promise<TagResponseDto[]> {
+    const tags = await this.tagModel.find(filter).exec()
+
+    return tags.map((tag) => this.tagsTransformer.transformTagToDto(tag))
   }
 }

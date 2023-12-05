@@ -41,7 +41,7 @@ export class TagsResolver {
   async findAll(
     @Args('pagination') pagination: PaginationInput,
   ): Promise<PaginatedTagsResponse> {
-    return this.tagsService.findAll({ pagination })
+    return this.tagsService.findAllPaginated({ pagination })
   }
 }
 

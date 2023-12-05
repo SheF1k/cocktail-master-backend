@@ -1,14 +1,27 @@
-import { NotFoundException } from '@nestjs/common'
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { TagResponseDto } from '@feature/tags/dto/response.dto'
+import { TagsService } from '@feature/tags/tags.service'
+import { forwardRef, Inject, NotFoundException } from '@nestjs/common'
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql'
+import { ADMIN_ROLE } from '@services/auth/roles.constants'
 
-import { ADMIN_ROLE } from '../../services/auth/roles.constants'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UserResponseDto } from './dto/user-response.dto'
 import { UsersService } from './users.service'
 
-@Resolver('User')
+@Resolver(() => UserResponseDto)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject(forwardRef(() => TagsService))
+    private readonly tagsService: TagsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @ADMIN_ROLE()
   @Mutation(() => UserResponseDto, { name: 'createUser' })
@@ -40,5 +53,10 @@ export class UsersResolver {
     }
 
     return user
+  }
+
+  @ResolveField(() => [TagResponseDto])
+  async tags(@Parent() user: UserResponseDto): Promise<TagResponseDto[]> {
+    return this.tagsService.findAll({ createdBy: user.id })
   }
 }

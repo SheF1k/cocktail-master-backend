@@ -5,14 +5,14 @@ import { Min } from 'class-validator'
 @InputType()
 export class PaginationInput {
   @Field(() => Int, { defaultValue: 1, nullable: true })
-  page: number
+  page?: number
 
   @Field(() => Int, { defaultValue: 10, nullable: true })
   @Min(1)
-  pageSize: number
+  pageSize?: number
 
   @Field(() => Boolean, { defaultValue: false, nullable: true })
-  allItems: boolean
+  allItems?: boolean
 }
 
 @ObjectType()
